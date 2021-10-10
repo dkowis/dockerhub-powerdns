@@ -1,6 +1,6 @@
 ARG LUA_VERSION=5.1
+FROM docker.io/library/alpine AS builder
 
-FROM alpine AS builder
 
 ARG DNSDIST_VERSION
 ARG LUA_VERSION

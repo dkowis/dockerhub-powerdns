@@ -1,6 +1,6 @@
 ARG LUA_VERSION=5.1
+FROM docker.io/library/alpine AS builder
 
-FROM alpine AS builder
 
 ARG RECURSOR_VERSION
 ARG LUA_VERSION
@@ -31,7 +31,7 @@ RUN apk --update upgrade && \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*
 
-FROM alpine
+FROM docker.io/library/alpine
 LABEL maintainer="https://keybase.io/tcely"
 
 ARG LUA_VERSION
