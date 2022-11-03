@@ -81,8 +81,9 @@ jobs:
           tags: |
             type=raw,value=latest
 
-      - name: Set up QEMU for buildx
-        uses: docker/setup-qemu-action@v1
+# don't need this when the arch is arm64 already, maybe there's a way to make it check?
+#      - name: Set up QEMU for buildx
+#        uses: docker/setup-qemu-action@v1
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
