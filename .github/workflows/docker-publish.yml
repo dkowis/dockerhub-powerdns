@@ -31,15 +31,15 @@ jobs:
           - registry: registry.light.kow.is
             context: authoritative
             image: powerdns-server
-            environment: 'DockerHub'
+            environment: 'Registry.light.kow.is'
           - registry: registry.light.kow.is
             context: dnsdist
             image: dnsdist
-            environment: 'DockerHub'
+            environment: 'Registry.light.kow.is'
           - registry: registry.light.kow.is
             context: recursor
             image: powerdns-recursor
-            environment: 'DockerHub'
+            environment: 'Registry.light.kow.is'
 
     steps:
       - name: Checkout repository
