@@ -75,7 +75,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ matrix.registry }}/library/${{ matrix.image }}
+          images: ${{ matrix.registry }}/kowis/${{ matrix.image }}
           flavor: |
             latest=false
           tags: |

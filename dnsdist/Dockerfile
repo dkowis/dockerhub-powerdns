@@ -1,5 +1,5 @@
 ARG LUA_VERSION=5.1
-FROM docker.io/library/alpine AS builder
+FROM registry.light.kow.is/docker-hub/library/alpine AS builder
 
 
 ARG DNSDIST_VERSION
@@ -31,7 +31,7 @@ RUN apk --update upgrade && \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*
 
-FROM alpine
+FROM registry.light.kow.is/docker-hub/library/alpine
 LABEL maintainer="https://keybase.io/tcely"
 
 ARG LUA_VERSION
