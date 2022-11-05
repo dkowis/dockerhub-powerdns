@@ -1,4 +1,3 @@
-import OctoKit from "@octokit/action";
 import {graphql} from "@octokit/graphql";
 import fs from 'fs';
 // want to get the apis for Powerdns and tags and filter out things for what we want
