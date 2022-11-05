@@ -15,13 +15,23 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  find_latest_stable:
+    runs-on: ubuntu-latest
+    outputs:
+      dnsdist_version: ${{steps.find_versions.outputs.dnsdistVersion}}
+      recursor_version: ${{steps.find_versions.outputs.recursorVersion}}
+      auth_version: ${{steps.find_versions.outputs.authVersion}}
+    steps:
+      - id: prereq
+        run: npm install @octokit/graphql
+      - id: find_versions
+        run: node .github/actions/get_latest_stable.mjs
 
+  build:
     environment: ${{ matrix.environment }}
     runs-on: self-hosted
     permissions:
       contents: read
-#     packages: write
 
     strategy:
       matrix:
@@ -30,15 +40,18 @@ jobs:
 #           environment: 'GitHub'
           - registry: registry.light.kow.is
             context: authoritative
+            version: ${{jobs.find_latest_stable.outputs.auth_version}}
             image: powerdns-server
             environment: 'Registry.light.kow.is'
           - registry: registry.light.kow.is
             context: dnsdist
             image: dnsdist
+            version: ${{jobs.find_latest_stable.outputs.dnsdist_version}}
             environment: 'Registry.light.kow.is'
           - registry: registry.light.kow.is
             context: recursor
             image: powerdns-recursor
+            version: ${{jobs.find_latest_stable.outputs.recursor_version}}
             environment: 'Registry.light.kow.is'
 
     steps:
@@ -69,6 +82,12 @@ jobs:
           username: ${{ secrets.REGISTRY_LOGIN }}
           password: ${{ secrets.REGISTRY_TOKEN }}
 
+      - name: Find latest versions
+        id: find_latest_versions
+        uses: actions/setup-node@v1
+        with:
+          version: 16
+
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
@@ -79,7 +98,7 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=raw,value=latest
+            type=raw,value=${{ matrix.version }}
 
 # don't need this when the arch is arm64 already, maybe there's a way to make it check?
 #      - name: Set up QEMU for buildx
@@ -98,7 +117,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.context }}/.
-          platforms: linux/arm64,linux/arm/v7
+          platforms: linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
