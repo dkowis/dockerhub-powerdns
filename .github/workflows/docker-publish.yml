@@ -29,6 +29,7 @@ jobs:
 
   build:
     environment: ${{ matrix.environment }}
+    needs: find_latest_stable
     runs-on: self-hosted
     permissions:
       contents: read
@@ -40,18 +41,18 @@ jobs:
 #           environment: 'GitHub'
           - registry: registry.light.kow.is
             context: authoritative
-            version: ${{jobs.find_latest_stable.outputs.auth_version}}
+            version: ${{needs.find_latest_stable.outputs.auth_version}}
             image: powerdns-server
             environment: 'Registry.light.kow.is'
           - registry: registry.light.kow.is
             context: dnsdist
             image: dnsdist
-            version: ${{jobs.find_latest_stable.outputs.dnsdist_version}}
+            version: ${{needs.find_latest_stable.outputs.dnsdist_version}}
             environment: 'Registry.light.kow.is'
           - registry: registry.light.kow.is
             context: recursor
             image: powerdns-recursor
-            version: ${{jobs.find_latest_stable.outputs.recursor_version}}
+            version: ${{needs.find_latest_stable.outputs.recursor_version}}
             environment: 'Registry.light.kow.is'
 
     steps:
