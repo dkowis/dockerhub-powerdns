@@ -22,6 +22,10 @@ jobs:
       recursor_version: ${{steps.find_versions.outputs.recursorVersion}}
       auth_version: ${{steps.find_versions.outputs.authVersion}}
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+            node-version: 16
       - id: prereq
         run: npm install @octokit/graphql
       - id: find_versions
