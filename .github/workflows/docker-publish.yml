@@ -110,7 +110,7 @@ jobs:
       # Only set up QEMU if the architecture isn't already ARM64 for us.
       - name: Set up QEMU for buildx
         uses: docker/setup-qemu-action@v1
-        if: ${{ runner.arch != "ARM64" }}
+        if: ${{ runner.arch != 'ARM64' }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
