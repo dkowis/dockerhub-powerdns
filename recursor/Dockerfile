@@ -37,7 +37,7 @@ LABEL maintainer="https://keybase.io/tcely"
 ARG LUA_VERSION
 
 RUN apk --update upgrade && \
-    apk add ca-certificates curl less mdocml \
+    apk add ca-certificates curl less \
         boost-context boost-filesystem \
         openssl libsodium lua${LUA_VERSION}-libs net-snmp protobuf \
         && \
