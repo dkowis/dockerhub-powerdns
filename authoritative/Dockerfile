@@ -39,7 +39,7 @@ LABEL maintainer="https://keybase.io/tcely"
 ARG LUA_VERSION
 
 RUN apk --update upgrade && \
-    apk add ca-certificates curl less mandoc \
+    apk add ca-certificates curl less mdocml-dev \
         boost-program_options boost-serialization \
         openssl libsodium lmdb lua${LUA_VERSION}-libs net-snmp protobuf \
         mariadb-connector-c libpq sqlite-libs \
