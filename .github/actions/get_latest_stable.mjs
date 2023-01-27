@@ -9,29 +9,35 @@ const graphqlWithAuth = graphql.defaults({
 });
 
 async function versionsForProduct(productPrefix) {
+    //Fixed query with actual ordering, gosh I'm dumb.
     const recursorVersions = await graphqlWithAuth(
         `
-            query MyQuery {
+        query MyQuery {
             repository(name: "pdns", owner: "PowerDNS") {
-            refs(refPrefix: "refs/tags/", last: 20, query: "${productPrefix}") {
-            nodes {
-            name
-            prefix
+              refs(refPrefix: "refs/tags/", first: 20, query: "${productPrefix}", orderBy: {
+                field:TAG_COMMIT_DATE,
+                direction: DESC
+              }) {
+                nodes {
+                  name
+                  prefix
+                }
+                totalCount
+              }
             }
-            totalCount
-            }
-            }
-            }
-            `
+          }
+        `
     );
 
     const versions = recursorVersions.repository.refs.nodes
     const filtered = versions.filter((item) => {
+        console.log(`Checking Version ${item.name}`);
         //If the name includes a hyphen, then it's got a alpha or pre-release we don't want
         return !item.name.replace(productPrefix, '').includes('-');
     });
+    console.log(`picked out ${filtered.at(0).name}`);
 
-    const latestStable = filtered.at(-1).name.replace(productPrefix, '');
+    const latestStable = filtered.at(0).name.replace(productPrefix, '');
     return latestStable;
 }
 
