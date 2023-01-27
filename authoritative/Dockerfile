@@ -3,7 +3,7 @@ FROM registry.light.kow.is/docker-hub/library/alpine AS builder
 
 
 ARG AUTH_VERSION
-ARG LUA_VERSION
+ARG MAKE_JOBS=2
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
@@ -28,7 +28,7 @@ RUN apk --update upgrade && \
             --enable-libsodium --with-sqlite3 --enable-tools \
             --with-modules='bind gsqlite3' \
             --with-dynmodules='geoip gmysql gpgsql lmdb lua2 pipe remote' && \
-        make -j 2 && \
+        make -j ${MAKE_JOBS} && \
         make install-strip \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*

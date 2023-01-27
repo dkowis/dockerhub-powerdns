@@ -3,7 +3,7 @@ FROM registry.light.kow.is/docker-hub/library/alpine AS builder
 
 
 ARG RECURSOR_VERSION
-ARG LUA_VERSION
+ARG MAKE_JOBS=2
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
@@ -26,7 +26,7 @@ RUN apk --update upgrade && \
         cd "pdns-recursor-${RECURSOR_VERSION}" && \
         ./configure --sysconfdir=/etc/pdns-recursor --mandir=/usr/share/man \
             && \
-        make -j 2 && \
+        make -j ${MAKE_JOBS} && \
         make install-strip \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*

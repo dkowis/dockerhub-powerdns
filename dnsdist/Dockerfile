@@ -3,7 +3,7 @@ FROM registry.light.kow.is/docker-hub/library/alpine AS builder
 
 
 ARG DNSDIST_VERSION
-ARG LUA_VERSION
+ARG MAKE_JOBS=2
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
@@ -26,7 +26,7 @@ RUN apk --update upgrade && \
         cd "dnsdist-${DNSDIST_VERSION}" && \
         ./configure --sysconfdir=/etc/dnsdist --mandir=/usr/share/man \
             --enable-dnscrypt --enable-dns-over-tls --with-libsodium --with-re2 --with-net-snmp && \
-        make -j 2 && \
+        make -j ${MAKE_JOBS} && \
         make install-strip \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*
