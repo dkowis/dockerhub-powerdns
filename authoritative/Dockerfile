@@ -9,7 +9,7 @@ RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
-      boost-dev openssl-dev libsodium-dev lmdb-dev lua${LUA_VERSION}-dev net-snmp-dev protobuf-dev \
+      boost-dev openssl-dev libsodium-dev lmdb-dev luajit-dev net-snmp-dev protobuf-dev \
       curl-dev mariadb-dev postgresql-dev sqlite-dev geoip-dev yaml-cpp-dev && \
     [ -n "$AUTH_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2,3}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("auth-")))|map(.version=(.name|ltrimstr("auth-")))|map(select(true != (.version|contains("-"))))|map(.version)|"AUTH_VERSION="+.[0]' > /tmp/latest-auth-tag.sh && . /tmp/latest-auth-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
@@ -41,7 +41,7 @@ ARG LUA_VERSION
 RUN apk --update upgrade && \
     apk add ca-certificates curl less \
         boost-program_options boost-serialization \
-        openssl libsodium lmdb lua${LUA_VERSION}-libs net-snmp protobuf \
+        openssl libsodium lmdb luajit net-snmp protobuf \
         mariadb-connector-c libpq sqlite-libs \
         geoip yaml-cpp && \
     rm -rf /var/cache/apk/*
