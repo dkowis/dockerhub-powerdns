@@ -4,12 +4,13 @@ FROM registry.light.kow.is/docker-hub/library/alpine AS builder
 
 ARG DNSDIST_VERSION
 ARG MAKE_JOBS=2
+ARG LUA_VERSION=5.1
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
-      boost-dev openssl-dev libsodium-dev luajit-dev net-snmp-dev protobuf-dev \
+      boost-dev openssl-dev libsodium-dev lua${LUA_VERSION}-dev net-snmp-dev protobuf-dev \
       libedit-dev re2-dev && \
     [ -n "$DNSDIST_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2,3}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("dnsdist-")))|map(.version=(.name|ltrimstr("dnsdist-")))|map(select(true != (.version|contains("-"))))|map(.version)|"DNSDIST_VERSION="+.[0]' > /tmp/latest-dnsdist-tag.sh && . /tmp/latest-dnsdist-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
@@ -38,7 +39,7 @@ ARG LUA_VERSION
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less \
-        openssl libsodium luajit net-snmp protobuf \
+        openssl libsodium lua${LUA_VERSION} net-snmp protobuf \
         libedit re2 && \
     rm -rf /var/cache/apk/*
 
