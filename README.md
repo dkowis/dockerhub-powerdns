@@ -4,6 +4,20 @@ Docker images of PowerDNS software built on Alpine Linux
 - https://hub.docker.com/r/tcely/powerdns-recursor/
 - https://hub.docker.com/r/tcely/powerdns-server/
 
+
+# How to build it locally using buildx on non-arm hardware
+
+In the folder for the product you want to build, do this:
+
+```bash
+docker buildx build --push \
+  --build-arg MAKE_JOBS=20 \
+  --platform linux/arm64/v8 \
+  --tag registry/powerdns-server:buildx-local \
+  .
+```
+
+
 ## Examples of using these images
 
 * ### As a base for your own `Dockerfile`

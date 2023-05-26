@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@octokit/action": "^4.0.10",
+    "@octokit/graphql": "^5.0.4",
+    "ts-node": "^10.9.1"
+  }
+}
