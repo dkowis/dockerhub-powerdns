@@ -35,6 +35,7 @@ async function versionsForProduct(productPrefix) {
         //If the name includes a hyphen, then it's got a alpha or pre-release we don't want
         return !item.name.replace(productPrefix, '').includes('-');
     });
+    //TODO: "latest stable" might not actually be the newest tag, because bugfixes, I need to pick the largest thing.
     console.log(`picked out ${filtered.at(0).name}`);
 
     const latestStable = filtered.at(0).name.replace(productPrefix, '');
