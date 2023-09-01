@@ -17,6 +17,18 @@ docker buildx build --push \
   .
 ```
 
+## Better examples of building it locally:
+```bash
+cd dnsdist
+docker buildx build \
+  --builder multi-arch-builder \
+  --build-arg DNSDIST_VERSION=1.8.0 \
+  --build-arg MAKE_JOBS=32 \
+  --push \
+  --tag registry.light.kow.is/kowis/dnsdist:1.8.0 \
+  --platform linux/arm64,linux/amd64 \
+  .
+```
 
 ## Examples of using these images
 

@@ -1,5 +1,6 @@
 import {graphql} from "@octokit/graphql";
 import fs from 'fs';
+const semverSort = require('semver-sort');
 // want to get the apis for Powerdns and tags and filter out things for what we want
 
 const graphqlWithAuth = graphql.defaults({
@@ -30,7 +31,11 @@ async function versionsForProduct(productPrefix) {
     );
 
     const versions = recursorVersions.repository.refs.nodes
-    const filtered = versions.filter((item) => {
+
+    //Convert all the versions to semantic ones, and sort them
+    const sorted = semverSort.desc(versions)
+
+    const filtered = sorted.filter((item) => {
         console.log(`Checking Version ${item.name}`);
         //If the name includes a hyphen, then it's got a alpha or pre-release we don't want
         return !item.name.replace(productPrefix, '').includes('-');
