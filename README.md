@@ -28,6 +28,17 @@ docker buildx build \
   --tag registry.light.kow.is/kowis/dnsdist:1.8.0 \
   --platform linux/arm64,linux/amd64 \
   .
+
+cd authoritative
+docker buildx build \
+  --builder multi-arch-builder \
+  --build-arg AUTH_VERSION=4.8.1 \
+  --build-arg MAKE_JOBS=32 \
+  --push \
+  --tag registry.light.kow.is/kowis/powerdns-server:4.8.1 \
+  --platform linux/arm64,linux/amd64 \
+  .
+
 ```
 
 ## Examples of using these images
