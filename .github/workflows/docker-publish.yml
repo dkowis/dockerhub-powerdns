@@ -25,7 +25,7 @@ jobs:
         with:
             node-version: 16
       - id: prereq
-        run: npm install @octokit/graphql
+        run: npm install @octokit/graphql semver-sort @octokit/action
       - id: find_versions
         run: node .github/actions/get_latest_stable.mjs
         env:

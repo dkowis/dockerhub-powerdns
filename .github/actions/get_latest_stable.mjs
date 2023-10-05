@@ -1,6 +1,7 @@
 import {graphql} from "@octokit/graphql";
 import fs from 'fs';
-const semverSort = require('semver-sort');
+import semverSort from 'semver-sort';
+//const semverSort = require('semver-sort');
 // want to get the apis for Powerdns and tags and filter out things for what we want
 
 const graphqlWithAuth = graphql.defaults({
