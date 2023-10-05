@@ -6,8 +6,9 @@ name: Docker
 # documentation.
 
 on:
-  schedule:
-    - cron: '11 1 * * 1'
+  # Disabling the schedule of this on master for my repo
+  # schedule:
+  #   - cron: '11 1 * * 1'
   push:
     branches: [ master ]
 #  pull_request:
