@@ -24,6 +24,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
             node-version: lts
+            check-latest: true
       - id: prereq
         run: npm install @octokit/graphql semver-sort @octokit/action
       - id: find_versions
