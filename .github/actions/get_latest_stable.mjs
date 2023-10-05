@@ -31,10 +31,11 @@ async function versionsForProduct(productPrefix) {
         `
     );
 
-    const versions = recursorVersions.repository.refs.nodes
+    const versions = recursorVersions.repository.refs.nodes;
+    console.log(`VERSIONS: ${versions}`);
 
     //Convert all the versions to semantic ones, and sort them
-    const sorted = semverSort.desc(versions)
+    const sorted = semverSort.desc(versions);
 
     const filtered = sorted.filter((item) => {
         console.log(`Checking Version ${item.name}`);
