@@ -1,6 +1,7 @@
 import {graphql} from "@octokit/graphql";
 import fs from 'fs';
 import semverSort from "semver-sort";
+import util from 'util';
 //const semverSort = require('semver-sort');
 // want to get the apis for Powerdns and tags and filter out things for what we want
 
@@ -31,21 +32,25 @@ async function versionsForProduct(productPrefix) {
         `
     );
 
-    const versions = recursorVersions.repository.refs.nodes;
-    console.log(`VERSIONS: ${versions}`);
+    const version_nodes = recursorVersions.repository.refs.nodes;
+
+    //Need to map the nodes into their name, and only the version, no product prefix
+    const versions = version_nodes.map((node) => node.name.replace(productPrefix, ''));
+
+    console.log(`Acquired 20 versions of ${productPrefix}: ${util.inspect(versions)}`);
 
     //Convert all the versions to semantic ones, and sort them
     const sorted = semverSort.desc(versions);
 
     const filtered = sorted.filter((item) => {
-        console.log(`Checking Version ${item.name}`);
+        //console.log(`Checking Version ${item}`);
         //If the name includes a hyphen, then it's got a alpha or pre-release we don't want
-        return !item.name.replace(productPrefix, '').includes('-');
+        return !item.includes('-');
     });
-    //TODO: "latest stable" might not actually be the newest tag, because bugfixes, I need to pick the largest thing.
-    console.log(`picked out ${filtered.at(0).name}`);
+    //This list has been sorted to have the latest version at the top, regardless of date pushed
+    console.log(`picked out ${filtered.at(0)}`);
 
-    const latestStable = filtered.at(0).name.replace(productPrefix, '');
+    const latestStable = filtered.at(0);
     return latestStable;
 }
 

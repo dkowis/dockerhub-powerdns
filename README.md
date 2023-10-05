@@ -4,6 +4,15 @@ Docker images of PowerDNS software built on Alpine Linux
 - https://hub.docker.com/r/tcely/powerdns-recursor/
 - https://hub.docker.com/r/tcely/powerdns-server/
 
+# How to use the javascript to do the right thing
+
+Export a GITHUB_TOKEN that can read from the API
+
+```shell
+cd .github/actions
+node get_latest_stable.mjs
+```
+
 
 # How to build it locally using buildx on non-arm hardware
 
