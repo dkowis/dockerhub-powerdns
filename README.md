@@ -4,6 +4,11 @@ Docker images of PowerDNS software built on Alpine Linux
 - https://hub.docker.com/r/tcely/powerdns-recursor/
 - https://hub.docker.com/r/tcely/powerdns-server/
 
+## Alpine references
+
+- [dnsdist apkbuild](https://git.alpinelinux.org/aports/tree/community/dnsdist/APKBUILD)
+
+
 # How to use the javascript to do the right thing
 
 Export a GITHUB_TOKEN that can read from the API
@@ -31,10 +36,9 @@ docker buildx build --push \
 cd dnsdist
 docker buildx build \
   --builder multi-arch-builder \
-  --build-arg DNSDIST_VERSION=1.8.0 \
-  --build-arg MAKE_JOBS=32 \
-  --push \
-  --tag registry.light.kow.is/kowis/dnsdist:1.8.0 \
+  --build-arg DNSDIST_VERSION=1.8.3 \
+  --build-arg MAKE_JOBS=16 \
+  --tag registry.light.kow.is/kowis/dnsdist:1.8.3 \
   --platform linux/arm64,linux/amd64 \
   .
 
@@ -42,7 +46,7 @@ cd authoritative
 docker buildx build \
   --builder multi-arch-builder \
   --build-arg AUTH_VERSION=4.8.1 \
-  --build-arg MAKE_JOBS=32 \
+  --build-arg MAKE_JOBS=16 \
   --push \
   --tag registry.light.kow.is/kowis/powerdns-server:4.8.1 \
   --platform linux/arm64,linux/amd64 \

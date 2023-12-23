@@ -4,12 +4,14 @@ FROM registry.light.kow.is/docker-hub/library/alpine AS builder
 
 ARG DNSDIST_VERSION
 ARG MAKE_JOBS=2
-ARG LUA_VERSION=5.1
+ARG LUA_VERSION=5.4
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
+      abseil-cpp-flags-internal abseil-cpp-flags-internal \
+      fstrm-dev h2o-dev lmdb-dev nghttp2-dev wslay-dev luajit-dev\
       boost-dev openssl-dev libsodium-dev lua${LUA_VERSION}-dev net-snmp-dev protobuf-dev \
       libedit-dev re2-dev && \
     [ -n "$DNSDIST_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2,3}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("dnsdist-")))|map(.version=(.name|ltrimstr("dnsdist-")))|map(select(true != (.version|contains("-"))))|map(.version)|"DNSDIST_VERSION="+.[0]' > /tmp/latest-dnsdist-tag.sh && . /tmp/latest-dnsdist-tag.sh; } && \
@@ -26,7 +28,9 @@ RUN apk --update upgrade && \
     ( \
         cd "dnsdist-${DNSDIST_VERSION}" && \
         ./configure --sysconfdir=/etc/dnsdist --mandir=/usr/share/man \
-            --enable-dnscrypt --enable-dns-over-tls --with-libsodium --with-re2 --with-net-snmp && \
+            --enable-dnscrypt --enable-dns-over-tls --enable-dns-over-https --with-libsodium --with-re2 --with-net-snmp \
+            --with-lua=lua${LUA_VERSION} \
+            --with-boost=/usr/include &&\
         make -j ${MAKE_JOBS} && \
         make install-strip \
     ) && \
@@ -39,7 +43,8 @@ ARG LUA_VERSION
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less \
-        openssl libsodium lua${LUA_VERSION} net-snmp protobuf abseil-cpp \
+        fstrm h2o lmdb nghttp2 wslay \
+        openssl libsodium lua${LUA_VERSION} luajit net-snmp protobuf abseil-cpp-flags-internal abseil-cpp-flags-marshalling \
         libedit re2 && \
     rm -rf /var/cache/apk/*
 
