@@ -39,7 +39,7 @@ ARG LUA_VERSION
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less \
-        openssl libsodium lua${LUA_VERSION} net-snmp protobuf \
+        openssl libsodium lua${LUA_VERSION} net-snmp protobuf abseil-cpp \
         libedit re2 && \
     rm -rf /var/cache/apk/*
 
