@@ -17,7 +17,9 @@ Export a GITHUB_TOKEN that can read from the API
 cd .github/actions
 node get_latest_stable.mjs
 ```
-
+recursorVersion=4.9.2
+dnsdistVersion=1.8.3
+authVersion=4.8.4
 
 # How to build it locally using buildx on non-arm hardware
 
@@ -38,6 +40,8 @@ docker buildx build \
   --builder multi-arch-builder \
   --build-arg DNSDIST_VERSION=1.8.3 \
   --build-arg MAKE_JOBS=16 \
+  --build-arg LUA_VERSION=5.4 \
+  --push \
   --tag registry.light.kow.is/kowis/dnsdist:1.8.3 \
   --platform linux/arm64,linux/amd64 \
   .

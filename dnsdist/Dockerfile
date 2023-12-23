@@ -39,7 +39,7 @@ RUN apk --update upgrade && \
 FROM registry.light.kow.is/docker-hub/library/alpine
 LABEL maintainer="https://keybase.io/tcely"
 
-ARG LUA_VERSION
+ARG LUA_VERSION=5.4
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less \
