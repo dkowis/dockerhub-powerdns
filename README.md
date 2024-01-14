@@ -1,3 +1,7 @@
+# Archived!
+I got the upstream docker containers working from PowerDNS directly, so I'm not
+supporting this any more.
+
 # dockerhub-powerdns
 Docker images of PowerDNS software built on Alpine Linux
 - https://hub.docker.com/r/tcely/dnsdist/
